@@ -1,6 +1,7 @@
 package fatec.les.ecommerce.model;
 
 public class Endereco extends DomainEntity {
+    private String nomeEndereco;
     private String tipoResidencia;
     private String tipoLogradouro;
     private String logradouro;
@@ -10,29 +11,32 @@ public class Endereco extends DomainEntity {
     private String cidade;
     private String estado;
     private String pais;
+    private String obsEndereco;
     private boolean enderecoEntrega;
     private boolean enderecoCobranca;
     private boolean favorito;
     private int clienteId;
 
     // Construtor completo
-    public Endereco(int idEndereco, String tipoResidencia, String tipoLogradouro, String logradouro, String numero,
-                    String bairro, String cep, String cidade, String estado, String pais, boolean enderecoEntrega,
+    public Endereco(int idEndereco, String nomeEndereco, String tipoResidencia, String tipoLogradouro, String logradouro, String numero,
+                    String bairro, String cep, String cidade, String estado, String pais, String obsEndereco, boolean enderecoEntrega,
                     boolean enderecoCobranca, boolean favorito, int clienteId) {
         super(idEndereco);
-        this.tipoResidencia = tipoResidencia;
-        this.tipoLogradouro = tipoLogradouro;
-        this.logradouro = logradouro;
-        this.numero = numero;
-        this.bairro = bairro;
-        this.cep = cep;
-        this.cidade = cidade;
-        this.estado = estado;
-        this.pais = pais;
-        this.enderecoEntrega = enderecoEntrega;
-        this.enderecoCobranca = enderecoCobranca;
-        this.favorito = favorito;
-        this.clienteId = clienteId;
+        setNomeEndereco(nomeEndereco);
+        setTipoResidencia(tipoResidencia);
+        setTipoLogradouro(tipoLogradouro);
+        setLogradouro(logradouro);
+        setNumero(numero);
+        setBairro(bairro);
+        setCep(cep);
+        setCidade(cidade);
+        setEstado(estado);
+        setPais(pais);
+        setObsEndereco(obsEndereco);
+        setEnderecoEntrega(enderecoEntrega);
+        setEnderecoCobranca(enderecoCobranca);
+        setFavorito(favorito);
+        setClienteId(clienteId);
     }
 
     // Getters e Setters
@@ -138,5 +142,21 @@ public class Endereco extends DomainEntity {
 
     public void setClienteId(int clienteId) {
         this.clienteId = clienteId;
+    }
+
+    public String getNomeEndereco() {
+        return nomeEndereco;
+    }
+
+    public void setNomeEndereco(String nomeEndereco) {
+        this.nomeEndereco = nomeEndereco;
+    }
+
+    public String getObsEndereco() {
+        return obsEndereco;
+    }
+
+    public void setObsEndereco(String obsEndereco) {
+        this.obsEndereco = obsEndereco;
     }
 }

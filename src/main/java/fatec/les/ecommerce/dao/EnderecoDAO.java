@@ -19,23 +19,27 @@ public class EnderecoDAO implements IDAO {
     @Override
     public int insert(DomainEntity entidade) {
         Endereco endereco = (Endereco) entidade;
-        String sql = "INSERT INTO enderecos (tipo_residencia, tipo_logradouro, logradouro, numero, bairro, cep, cidade, estado, pais, endereco_entrega, endereco_cobranca, favorito, cliente_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO enderecos (nome_endereco, tipo_residencia, tipo_logradouro, logradouro, numero, bairro, cep, cidade, estado, pais, obs_endereco, endereco_entrega, endereco_cobranca, favorito, cliente_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, endereco.getTipoResidencia());
-            stmt.setString(2, endereco.getTipoLogradouro());
-            stmt.setString(3, endereco.getLogradouro());
-            stmt.setString(4, endereco.getNumero());
-            stmt.setString(5, endereco.getBairro());
-            stmt.setString(6, endereco.getCep());
-            stmt.setString(7, endereco.getCidade());
-            stmt.setString(8, endereco.getEstado());
-            stmt.setString(9, endereco.getPais());
-            stmt.setBoolean(10, endereco.isEnderecoEntrega());
-            stmt.setBoolean(11, endereco.isEnderecoCobranca());
-            stmt.setBoolean(12, endereco.isFavorito());
-            stmt.setInt(13, endereco.getClienteId());
+            stmt.setString(1, endereco.getNomeEndereco());
+            stmt.setString(2, endereco.getTipoResidencia());
+            stmt.setString(3, endereco.getTipoLogradouro());
+            stmt.setString(4, endereco.getLogradouro());
+            stmt.setString(5, endereco.getNumero());
+            stmt.setString(6, endereco.getBairro());
+            stmt.setString(7, endereco.getCep());
+            stmt.setString(8, endereco.getCidade());
+            stmt.setString(9, endereco.getEstado());
+            stmt.setString(10, endereco.getPais());
+            stmt.setString(11, endereco.getObsEndereco());
+            stmt.setBoolean(12, endereco.isEnderecoEntrega());
+            stmt.setBoolean(13, endereco.isEnderecoCobranca());
+            stmt.setBoolean(14, endereco.isFavorito());
+            stmt.setInt(15, endereco.getClienteId());
+            stmt.setInt(16, endereco.getId());
 
             stmt.executeUpdate();
 
@@ -55,23 +59,27 @@ public class EnderecoDAO implements IDAO {
     @Override
     public String update(DomainEntity entidade) {
         Endereco endereco = (Endereco) entidade;
-        String sql = "UPDATE enderecos SET tipo_residencia = ?, tipo_logradouro = ?, logradouro = ?, numero = ?, bairro = ?, cep = ?, cidade = ?, estado = ?, pais = ?, endereco_entrega = ?, endereco_cobranca = ?, favorito = ? WHERE id_endereco = ?";
+        String sql = "UPDATE enderecos SET nome_endereco = ?, tipo_residencia = ?, tipo_logradouro = ?, logradouro = ?, numero = ?, bairro = ?, cep = ?, cidade = ?, estado = ?, pais = ?, obs_endereco = ?, " +
+                "endereco_entrega = ?, endereco_cobranca = ?, favorito = ? WHERE id_endereco = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, endereco.getTipoResidencia());
-            stmt.setString(2, endereco.getTipoLogradouro());
-            stmt.setString(3, endereco.getLogradouro());
-            stmt.setString(4, endereco.getNumero());
-            stmt.setString(5, endereco.getBairro());
-            stmt.setString(6, endereco.getCep());
-            stmt.setString(7, endereco.getCidade());
-            stmt.setString(8, endereco.getEstado());
-            stmt.setString(9, endereco.getPais());
-            stmt.setBoolean(10, endereco.isEnderecoEntrega());
-            stmt.setBoolean(11, endereco.isEnderecoCobranca());
-            stmt.setBoolean(12, endereco.isFavorito());
-            stmt.setInt(13, endereco.getId());
+            stmt.setString(1, endereco.getNomeEndereco());
+            stmt.setString(2, endereco.getTipoResidencia());
+            stmt.setString(3, endereco.getTipoLogradouro());
+            stmt.setString(4, endereco.getLogradouro());
+            stmt.setString(5, endereco.getNumero());
+            stmt.setString(6, endereco.getBairro());
+            stmt.setString(7, endereco.getCep());
+            stmt.setString(8, endereco.getCidade());
+            stmt.setString(9, endereco.getEstado());
+            stmt.setString(10, endereco.getPais());
+            stmt.setString(11, endereco.getObsEndereco());
+            stmt.setBoolean(12, endereco.isEnderecoEntrega());
+            stmt.setBoolean(13, endereco.isEnderecoCobranca());
+            stmt.setBoolean(14, endereco.isFavorito());
+            stmt.setInt(15, endereco.getId());
+
 
             int affectedRows = stmt.executeUpdate();
             return affectedRows > 0 ? "sucesso" : "erro";
@@ -103,6 +111,7 @@ public class EnderecoDAO implements IDAO {
             while (rs.next()) {
                 Endereco endereco = new Endereco(
                         rs.getInt("id_endereco"),
+                        rs.getString("nome_endereco"),
                         rs.getString("tipo_residencia"),
                         rs.getString("tipo_logradouro"),
                         rs.getString("logradouro"),
@@ -112,6 +121,7 @@ public class EnderecoDAO implements IDAO {
                         rs.getString("cidade"),
                         rs.getString("estado"),
                         rs.getString("pais"),
+                        rs.getString("obs_endereco"),
                         rs.getBoolean("endereco_entrega"),
                         rs.getBoolean("endereco_cobranca"),
                         rs.getBoolean("favorito"),
@@ -135,6 +145,7 @@ public class EnderecoDAO implements IDAO {
             if (rs.next()) {
                 return new Endereco(
                         rs.getInt("id_endereco"),
+                        rs.getString("nome_endereco"),
                         rs.getString("tipo_residencia"),
                         rs.getString("tipo_logradouro"),
                         rs.getString("logradouro"),
@@ -144,6 +155,7 @@ public class EnderecoDAO implements IDAO {
                         rs.getString("cidade"),
                         rs.getString("estado"),
                         rs.getString("pais"),
+                        rs.getString("obs_endereco"),
                         rs.getBoolean("endereco_entrega"),
                         rs.getBoolean("endereco_cobranca"),
                         rs.getBoolean("favorito"),
@@ -168,6 +180,7 @@ public class EnderecoDAO implements IDAO {
             while (rs.next()) {
                 Endereco endereco = new Endereco(
                         rs.getInt("id_endereco"),
+                        rs.getString("nome_endereco"),
                         rs.getString("tipo_residencia"),
                         rs.getString("tipo_logradouro"),
                         rs.getString("logradouro"),
@@ -177,6 +190,7 @@ public class EnderecoDAO implements IDAO {
                         rs.getString("cidade"),
                         rs.getString("estado"),
                         rs.getString("pais"),
+                        rs.getString("obs_endereco"),
                         rs.getBoolean("endereco_entrega"),
                         rs.getBoolean("endereco_cobranca"),
                         rs.getBoolean("favorito"),

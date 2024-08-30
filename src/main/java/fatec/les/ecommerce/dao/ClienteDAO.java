@@ -18,18 +18,20 @@ public class ClienteDAO implements IDAO {
     @Override
     public int insert(DomainEntity entidade) {
         Cliente cliente = (Cliente) entidade;
-        String sql = "INSERT INTO clientes (genero, nome, data_nascimento, cpf, telefone_tipo, telefone_numero, email, senha) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO clientes (genero, nome_cliente, data_nascimento, cpf, telefone_tipo, telefone_numero, email, senha, ranking, cliente_ativo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, cliente.getGenero());
-            stmt.setString(2, cliente.getNome());
+            stmt.setString(2, cliente.getNomeCliente());
             stmt.setString(3, cliente.getDataNascimento());
             stmt.setString(4, cliente.getCpf());
             stmt.setString(5, cliente.getTelefoneTipo());
             stmt.setString(6, cliente.getTelefoneNumero());
             stmt.setString(7, cliente.getEmail());
             stmt.setString(8, cliente.getSenha());
+            stmt.setInt(9, cliente.getRanking());
+            stmt.setBoolean(10, cliente.isClienteAtivo());
 
             stmt.executeUpdate();
 
@@ -49,19 +51,21 @@ public class ClienteDAO implements IDAO {
     @Override
     public String update(DomainEntity entidade) {
         Cliente cliente = (Cliente) entidade;
-        String sql = "UPDATE clientes SET genero = ?, nome = ?, data_nascimento = ?, cpf = ?, telefone_tipo = ?, telefone_numero = ?, email = ?, senha = ? WHERE id_cliente = ?";
+        String sql = "UPDATE clientes SET genero = ?, nome_cliente = ?, data_nascimento = ?, cpf = ?, telefone_tipo = ?, telefone_numero = ?, email = ?, senha = ?, ranking = ?, cliente_ativo = ? WHERE id_cliente = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, cliente.getGenero());
-            stmt.setString(2, cliente.getNome());
+            stmt.setString(2, cliente.getNomeCliente());
             stmt.setString(3, cliente.getDataNascimento());
             stmt.setString(4, cliente.getCpf());
             stmt.setString(5, cliente.getTelefoneTipo());
             stmt.setString(6, cliente.getTelefoneNumero());
             stmt.setString(7, cliente.getEmail());
             stmt.setString(8, cliente.getSenha());
-            stmt.setInt(9, cliente.getId());
+            stmt.setInt(9, cliente.getRanking());
+            stmt.setBoolean(10, cliente.isClienteAtivo());
+            stmt.setInt(11, cliente.getId());
 
             int affectedRows = stmt.executeUpdate();
             return affectedRows > 0 ? "sucesso" : "erro";
@@ -102,13 +106,15 @@ public class ClienteDAO implements IDAO {
                 Cliente cliente = new Cliente(
                         rs.getInt("id_cliente"),
                         rs.getString("genero"),
-                        rs.getString("nome"),
+                        rs.getString("nome_cliente"),
                         rs.getString("data_nascimento"),
                         rs.getString("cpf"),
                         rs.getString("telefone_tipo"),
                         rs.getString("telefone_numero"),
                         rs.getString("email"),
                         rs.getString("senha"),
+                        rs.getInt("ranking"),
+                        rs.getBoolean("cliente_ativo"),
                         enderecos,
                         cartoesCredito
                 );
@@ -139,13 +145,15 @@ public class ClienteDAO implements IDAO {
                 return new Cliente(
                         rs.getInt("id_cliente"),
                         rs.getString("genero"),
-                        rs.getString("nome"),
+                        rs.getString("nome_cliente"),
                         rs.getString("data_nascimento"),
                         rs.getString("cpf"),
                         rs.getString("telefone_tipo"),
                         rs.getString("telefone_numero"),
                         rs.getString("email"),
                         rs.getString("senha"),
+                        rs.getInt("ranking"),
+                        rs.getBoolean("cliente_ativo"),
                         enderecos,
                         cartoesCredito
                 );
@@ -154,5 +162,51 @@ public class ClienteDAO implements IDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public String changePassword(DomainEntity entidade) {
+        Cliente cliente = (Cliente) entidade;
+        String sql = "UPDATE clientes SET senha = ? WHERE id_cliente = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, cliente.getSenha());
+            stmt.setInt(2, cliente.getId());
+
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0 ? "sucesso" : "erro";
+        } catch (SQLException e) {
+            return "erro";
+        }
+    }
+
+    public String activate(DomainEntity entidade) {
+        Cliente cliente = (Cliente) entidade;
+        String sql = "UPDATE clientes SET cliente_ativo = 1 WHERE id_cliente = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, cliente.getId());
+
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0 ? "sucesso" : "erro";
+        } catch (SQLException e) {
+            return "erro";
+        }
+    }
+
+    public String inactivate(DomainEntity entidade) {
+        Cliente cliente = (Cliente) entidade;
+        String sql = "UPDATE clientes SET cliente_ativo = 0 WHERE id_cliente = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, cliente.getId());
+
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0 ? "sucesso" : "erro";
+        } catch (SQLException e) {
+            return "erro";
+        }
     }
 }

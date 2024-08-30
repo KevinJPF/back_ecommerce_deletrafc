@@ -3,6 +3,7 @@ package fatec.les.ecommerce.fachada;
 import fatec.les.ecommerce.dao.ClienteDAO;
 import fatec.les.ecommerce.model.Cliente;
 import fatec.les.ecommerce.model.DomainEntity;
+import fatec.les.ecommerce.strategy.ValidarCamposObrigatoriosCliente;
 
 import java.util.List;
 
@@ -33,11 +34,7 @@ public class ClienteFachada implements IFachada {
             Cliente cliente = (Cliente) entidadeCliente;
             String returnString = "";
 
-//            returnString += ValidarCamposObrigatorios.getInstance().process(entidadeLivro);
-//            returnString += ValidarAutoresLivro.getInstance().process(entidadeLivro);
-//            returnString += ValidarCategoriasLivro.getInstance().process(entidadeLivro);
-//            returnString += ValidarMargemLucro.getInstance().process(entidadeLivro);
-//            returnString += ValidarExistencia.getInstance().process(entidadeLivro);
+            returnString += ValidarCamposObrigatoriosCliente.getInstance().process(cliente);
 
             if (returnString.isEmpty()) {
                 int id = ClienteDAO.getInstance().insert(cliente);
@@ -66,15 +63,11 @@ public class ClienteFachada implements IFachada {
 
     @Override
     public String updateEntity(DomainEntity entidadeCliente) {
-
         if (entidadeCliente instanceof Cliente) {
             Cliente cliente = (Cliente) entidadeCliente;
             String returnString = "";
 
-//            returnString += ValidarCamposObrigatorios.getInstance().process(entidadeCliente);
-//            returnString += ValidarAutoresLivro.getInstance().process(entidadeCliente);
-//            returnString += ValidarCategoriasLivro.getInstance().process(entidadeCliente);
-//            returnString += ValidarMargemLucro.getInstance().process(entidadeCliente);
+            returnString += ValidarCamposObrigatoriosCliente.getInstance().process(cliente);
 
             if (returnString.isEmpty()) {
 //                returnString += GerarLog.getInstance().process(cliente);
@@ -85,12 +78,57 @@ public class ClienteFachada implements IFachada {
             }
             return returnString.isEmpty() ? "Cliente atualizado com sucesso." : returnString;
         } else {
-            return "A entidadeCliente fornecida não é um objeto Livro válido.";
+            return "A entidadeCliente fornecida não é um objeto Cliente válido.";
         }
     }
 
     @Override
     public String deleteEntity(Integer id) {
         return ClienteDAO.getInstance().delete(id);
+    }
+
+    public String changePassword(DomainEntity entidadeCliente) {
+
+        if (entidadeCliente instanceof Cliente) {
+            Cliente cliente = (Cliente) entidadeCliente;
+            String returnString = "";
+
+            if (returnString.isEmpty()) {
+                returnString += !ClienteDAO.getInstance().changePassword(cliente).equals("sucesso") ? "Erro ao ativar o cliente.\n" : "";
+            }
+            return returnString.isEmpty() ? "Senha alterada com sucesso." : returnString;
+        } else {
+            return "A entidadeCliente fornecida não é um objeto Cliente válido.";
+        }
+    }
+
+    public String activateCliente(DomainEntity entidadeCliente) {
+
+        if (entidadeCliente instanceof Cliente) {
+            Cliente cliente = (Cliente) entidadeCliente;
+            String returnString = "";
+
+            if (returnString.isEmpty()) {
+                returnString += !ClienteDAO.getInstance().activate(cliente).equals("sucesso") ? "Erro ao ativar o cliente.\n" : "";
+            }
+            return returnString.isEmpty() ? "Cliente ativado com sucesso." : returnString;
+        } else {
+            return "A entidadeCliente fornecida não é um objeto Cliente válido.";
+        }
+    }
+
+    public String inactivateCliente(DomainEntity entidadeCliente) {
+
+        if (entidadeCliente instanceof Cliente) {
+            Cliente cliente = (Cliente) entidadeCliente;
+            String returnString = "";
+
+            if (returnString.isEmpty()) {
+                returnString += !ClienteDAO.getInstance().inactivate(cliente).equals("sucesso") ? "Erro ao inativar o cliente.\n" : "";
+            }
+            return returnString.isEmpty() ? "Cliente inativado com sucesso." : returnString;
+        } else {
+            return "A entidadeCliente fornecida não é um objeto Cliente válido.";
+        }
     }
 }

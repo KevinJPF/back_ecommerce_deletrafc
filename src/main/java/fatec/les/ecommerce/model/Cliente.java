@@ -4,28 +4,32 @@ import java.util.List;
 
 public class Cliente extends DomainEntity {
     private String genero;
-    private String nome;
+    private String nomeCliente;
     private String dataNascimento;
     private String cpf;
     private String telefoneTipo;
     private String telefoneNumero;
     private String email;
     private String senha;
+    private int ranking;
+    private boolean clienteAtivo;
     private List<Endereco> enderecos;
     private List<CartaoCredito> cartoesCredito;
 
     // Construtor completo
     public Cliente(int idCliente, String genero, String nome, String dataNascimento, String cpf,
-                   String telefoneTipo, String telefoneNumero, String email, String senha, List<Endereco> enderecos, List<CartaoCredito> cartoesCredito) {
+                   String telefoneTipo, String telefoneNumero, String email, String senha, int ranking, boolean clienteAtivo, List<Endereco> enderecos, List<CartaoCredito> cartoesCredito) {
         super(idCliente);
         setGenero(genero);
-        setNome(nome);
+        setNomeCliente(nome);
         setDataNascimento(dataNascimento);
         setCpf(cpf);
         setTelefoneTipo(telefoneTipo);
         setTelefoneNumero(telefoneNumero);
         setEmail(email);
         setSenha(senha);
+        setRanking(ranking);
+        setClienteAtivo(clienteAtivo);
         setEnderecos(enderecos);
         setCartoesCredito(cartoesCredito);
     }
@@ -39,12 +43,12 @@ public class Cliente extends DomainEntity {
         this.genero = genero;
     }
 
-    public String getNome() {
-        return nome;
+    public String getNomeCliente() {
+        return nomeCliente;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNomeCliente(String nomeCliente) {
+        this.nomeCliente = nomeCliente;
     }
 
     public String getDataNascimento() {
@@ -109,5 +113,21 @@ public class Cliente extends DomainEntity {
 
     public void setCartoesCredito(List<CartaoCredito> cartoesCredito) {
         this.cartoesCredito = cartoesCredito;
+    }
+
+    public int getRanking() {
+        return ranking;
+    }
+
+    public void setRanking(int ranking) {
+        this.ranking = ranking;
+    }
+
+    public boolean isClienteAtivo() {
+        return clienteAtivo;
+    }
+
+    public void setClienteAtivo(boolean clienteAtivo) {
+        this.clienteAtivo = clienteAtivo;
     }
 }

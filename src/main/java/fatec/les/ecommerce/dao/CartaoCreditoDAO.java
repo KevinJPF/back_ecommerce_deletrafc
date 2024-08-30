@@ -19,16 +19,17 @@ public class CartaoCreditoDAO implements IDAO {
     @Override
     public int insert(DomainEntity entidade) {
         CartaoCredito cartaoCredito = (CartaoCredito) entidade;
-        String sql = "INSERT INTO cartoes_credito (numero_cartao, nome_impresso, bandeira_cartao, codigo_seguranca, favorito, cliente_id) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO cartoes_credito (nome_cartao, numero_cartao, nome_impresso, bandeira_cartao, codigo_seguranca, favorito, cliente_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, cartaoCredito.getNumeroCartao());
-            stmt.setString(2, cartaoCredito.getNomeImpresso());
-            stmt.setString(3, cartaoCredito.getBandeiraCartao());
-            stmt.setString(4, cartaoCredito.getCodigoSeguranca());
-            stmt.setBoolean(5, cartaoCredito.isFavorito());
-            stmt.setInt(6, cartaoCredito.getClienteId());
+            stmt.setString(1, cartaoCredito.getNomeCartao());
+            stmt.setString(2, cartaoCredito.getNumeroCartao());
+            stmt.setString(3, cartaoCredito.getNomeImpresso());
+            stmt.setString(4, cartaoCredito.getBandeiraCartao());
+            stmt.setString(5, cartaoCredito.getCodigoSeguranca());
+            stmt.setBoolean(6, cartaoCredito.isFavorito());
+            stmt.setInt(7, cartaoCredito.getClienteId());
 
             stmt.executeUpdate();
 
@@ -48,16 +49,17 @@ public class CartaoCreditoDAO implements IDAO {
     @Override
     public String update(DomainEntity entidade) {
         CartaoCredito cartaoCredito = (CartaoCredito) entidade;
-        String sql = "UPDATE cartoes_credito SET numero_cartao = ?, nome_impresso = ?, bandeira_cartao = ?, codigo_seguranca = ?, favorito = ? WHERE id_cartao = ?";
+        String sql = "UPDATE cartoes_credito SET nome_cartao = ?, numero_cartao = ?, nome_impresso = ?, bandeira_cartao = ?, codigo_seguranca = ?, favorito = ? WHERE id_cartao = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, cartaoCredito.getNumeroCartao());
-            stmt.setString(2, cartaoCredito.getNomeImpresso());
-            stmt.setString(3, cartaoCredito.getBandeiraCartao());
-            stmt.setString(4, cartaoCredito.getCodigoSeguranca());
-            stmt.setBoolean(5, cartaoCredito.isFavorito());
-            stmt.setInt(6, cartaoCredito.getId());
+            stmt.setString(2, cartaoCredito.getNomeCartao());
+            stmt.setString(3, cartaoCredito.getNomeImpresso());
+            stmt.setString(4, cartaoCredito.getBandeiraCartao());
+            stmt.setString(5, cartaoCredito.getCodigoSeguranca());
+            stmt.setBoolean(6, cartaoCredito.isFavorito());
+            stmt.setInt(7, cartaoCredito.getId());
 
             int affectedRows = stmt.executeUpdate();
             return affectedRows > 0 ? "sucesso" : "erro";
@@ -89,6 +91,7 @@ public class CartaoCreditoDAO implements IDAO {
             while (rs.next()) {
                 CartaoCredito cartaoCredito = new CartaoCredito(
                         rs.getInt("id_cartao"),
+                        rs.getString("nome_cartao"),
                         rs.getString("numero_cartao"),
                         rs.getString("nome_impresso"),
                         rs.getString("bandeira_cartao"),
@@ -114,6 +117,7 @@ public class CartaoCreditoDAO implements IDAO {
             if (rs.next()) {
                 return new CartaoCredito(
                         rs.getInt("id_cartao"),
+                        rs.getString("nome_cartao"),
                         rs.getString("numero_cartao"),
                         rs.getString("nome_impresso"),
                         rs.getString("bandeira_cartao"),
@@ -140,6 +144,7 @@ public class CartaoCreditoDAO implements IDAO {
             while (rs.next()) {
                 CartaoCredito cartaoCredito = new CartaoCredito(
                         rs.getInt("id_cartao"),
+                        rs.getString("nome_cartao"),
                         rs.getString("numero_cartao"),
                         rs.getString("nome_impresso"),
                         rs.getString("bandeira_cartao"),

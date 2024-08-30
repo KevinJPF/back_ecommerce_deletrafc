@@ -66,4 +66,34 @@ public class ClienteController {
             return new ResponseEntity<>("Erro ao excluir cliente:  \n" + response, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping("/cliente/alterar-senha")
+    public ResponseEntity<String> changePassword(@RequestBody Cliente cliente) {
+        String response = ClienteFachada.getInstance().changePassword(cliente);
+        if (response.contains("sucesso")) {
+            return new ResponseEntity<>("Senha alterada com sucesso!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Erro ao alterar senha:  \n" + response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/cliente/ativar")
+    public ResponseEntity<String> activateCliente(@RequestBody Cliente cliente) {
+        String response = ClienteFachada.getInstance().activateCliente(cliente);
+        if (response.contains("sucesso")) {
+            return new ResponseEntity<>("Cliente ativado com sucesso!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Erro ao ativar cliente:  \n" + response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/cliente/inativar")
+    public ResponseEntity<String> inactivateCliente(@RequestBody Cliente cliente) {
+        String response = ClienteFachada.getInstance().inactivateCliente(cliente);
+        if (response.contains("sucesso")) {
+            return new ResponseEntity<>("Cliente inativado com sucesso!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Erro ao inativar cliente:  \n" + response, HttpStatus.BAD_REQUEST);
+        }
+    }
 }

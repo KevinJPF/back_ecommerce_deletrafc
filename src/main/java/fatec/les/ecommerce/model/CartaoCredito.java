@@ -1,6 +1,7 @@
 package fatec.les.ecommerce.model;
 
 public class CartaoCredito extends DomainEntity {
+    private String nomeCartao;
     private String numeroCartao;
     private String nomeImpresso;
     private String bandeiraCartao;
@@ -9,15 +10,16 @@ public class CartaoCredito extends DomainEntity {
     private int clienteId;
 
     // Construtor completo
-    public CartaoCredito(int idCartao, String numeroCartao, String nomeImpresso, String bandeiraCartao,
+    public CartaoCredito(int idCartao, String nomeCartao, String numeroCartao, String nomeImpresso, String bandeiraCartao,
                          String codigoSeguranca, boolean favorito, int clienteId) {
         super(idCartao);
-        this.numeroCartao = numeroCartao;
-        this.nomeImpresso = nomeImpresso;
-        this.bandeiraCartao = bandeiraCartao;
-        this.codigoSeguranca = codigoSeguranca;
-        this.favorito = favorito;
-        this.clienteId = clienteId;
+        setNomeCartao(nomeCartao);
+        setNumeroCartao(numeroCartao);
+        setNomeImpresso(nomeImpresso);
+        setBandeiraCartao(bandeiraCartao);
+        setCodigoSeguranca(codigoSeguranca);
+        setFavorito(favorito);
+        setClienteId(clienteId);
     }
 
     // Getters e Setters
@@ -67,5 +69,13 @@ public class CartaoCredito extends DomainEntity {
 
     public void setClienteId(int clienteId) {
         this.clienteId = clienteId;
+    }
+
+    public String getNomeCartao() {
+        return nomeCartao;
+    }
+
+    public void setNomeCartao(String nomeCartao) {
+        this.nomeCartao = nomeCartao;
     }
 }
